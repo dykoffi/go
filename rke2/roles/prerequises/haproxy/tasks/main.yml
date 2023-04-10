@@ -1,0 +1,32 @@
+---
+- name: Install Haproxy on local hosts
+  become: true
+  block:
+    - name: Install Haproxy on Debian system
+      when: ansible_facts['os_family'] == "Debian"
+      ansible.builtin.apt:
+        state: present
+        name: haproxy
+
+    - name: Install Haproxy on RedHat system
+      when: ansible_facts['os_family'] == "RedHat"
+      ansible.builtin.yum:
+        state: present
+        name: haproxy
+
+    - name: Add haproxy bin dir to system-wide $PATH
+      ansible.builtin.copy:
+        dest: /usr/bin
+        src: /usr/sbin/haproxy
+        mode: 0751
+
+    - name: Initialize Haproxy Config
+      ansible.builtin.template:
+        mode: 0700
+        src: haproxy.cfg.j2
+        dest: "{{ haproxy_config_dir }}/haproxy.cfg"
+
+    - name: Set haproxy config directory
+      notify: Enable Haproxy Service
+      ansible.builtin.command:
+        cmd: haproxy -f {{ haproxy_config_dir }}/haproxy.cfg
