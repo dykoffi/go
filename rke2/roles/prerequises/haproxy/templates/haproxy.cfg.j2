@@ -64,14 +64,4 @@ listen kubernetes-ingress-https-services
     option tcplog
     {% for item in groups['k8s'] -%}
     server {{ item }} {{ item }}:443 check check-ssl verify none inter 10000
-    {% endfor %}
-
-{% for item in k8s_services_nodeport %}
-listen {{ item.name }}-nodeport
-    bind *:{{ item.port }}
-    mode tcp
-    option tcplog
-    {% for item2 in groups['k8s'] -%}
-    server {{ item2 }} {{ item2 }}:{{ item.port }} check
-    {% endfor %}
 {% endfor %}

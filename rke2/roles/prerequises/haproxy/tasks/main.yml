@@ -8,17 +8,11 @@
         state: present
         name: haproxy
 
-    - name: Install Haproxy on RedHat system
-      when: ansible_facts['os_family'] == "RedHat"
-      ansible.builtin.yum:
-        state: present
-        name: haproxy
-
-    - name: Add haproxy bin dir to system-wide $PATH
-      ansible.builtin.copy:
-        dest: /usr/bin
-        src: /usr/sbin/haproxy
-        mode: 0751
+    # - name: Add haproxy bin dir to system-wide $PATH
+    #   ansible.builtin.copy:
+    #     dest: /usr/bin
+    #     src: /usr/sbin/haproxy
+    #     mode: 0751
 
     - name: Initialize Haproxy Config
       ansible.builtin.template:

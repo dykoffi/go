@@ -33,8 +33,8 @@
       ansible.builtin.command:
         chdir: /home/{{ user }}/
         cmd: sh rke2-server
-      environment:
-        INSTALL_RKE2_VERSION: "{{ install_rke2_version }}"
+      # environment:
+        # INSTALL_RKE2_VERSION: "{{ install_rke2_version }}"
       register: output
       changed_when: output.rc !=0
 
