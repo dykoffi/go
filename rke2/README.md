@@ -50,15 +50,6 @@ This project is the setup of a production environment based on a kubernetes clus
 
 `main.playbook.yml` : Contains all previous playbooks and runs them in order.
 
-## **Configuration**
-
-To display time taken for tasks when running ansible-playbook, copy and paste the following content in the file by using `sudo nano -m /etc/ansible/ansible.cfg`
-
-```bash
-[defaults]
-callbacks_enabled = profile_tasks
-```
-
 ## **Process**
 
 1. If tou don't use proxy in your environment, set the common variable `use_proxy` to false (`roles/commun/default/main.yml`)

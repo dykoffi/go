@@ -23,7 +23,6 @@
 - name: Install python module
   tags:
     - packages
-    - lb
   hosts: localhost
   roles:
     - prerequises/modules

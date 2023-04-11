@@ -8,12 +8,6 @@
         state: present
         name: haproxy
 
-    # - name: Add haproxy bin dir to system-wide $PATH
-    #   ansible.builtin.copy:
-    #     dest: /usr/bin
-    #     src: /usr/sbin/haproxy
-    #     mode: 0751
-
     - name: Initialize Haproxy Config
       ansible.builtin.template:
         mode: 0700
