@@ -5,4 +5,6 @@ multipass launch --cloud-init $(pwd)/multipass/cloud-init --cpus 1 --memory 4G -
 
 wait
 
-sh $(pwd)/multipass/initialize-ansible-cluster.sh
+echo "All instances created"
+
+# sh $(pwd)/multipass/initialize-ansible-cluster.sh

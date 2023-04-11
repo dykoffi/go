@@ -1,30 +1,41 @@
 # PUBLIC IP
-master_ansible_ip=$(multipass exec master-ansible -- hostname -i)
-control_plane_ip=$(multipass exec control-plane -- hostname -i)
-data_plane_1_ip=$(multipass exec data-plane-1 -- hostname -i)
-data_plane_2_ip=$(multipass exec data-plane-2 -- hostname -i)
-data_plane_3_ip=$(multipass exec data-plane-3 -- hostname -i)
+master_ansible_ip=$(multipass exec master-ansible -- hostname -I)
+control_plane_ip=$(multipass exec control-plane -- hostname -I)
+data_plane_1_ip=$(multipass exec data-plane-1 -- hostname -I)
+data_plane_2_ip=$(multipass exec data-plane-2 -- hostname -I)
+user=ubuntu
+
+echo
+echo "Veuillez ajouter les adresses ip des noeuds ansible aux hosts du master ansible."
+echo "Les commandes suivantes doivent être effectuées sur le master ansible en étant sudo."
+echo "Une fois fait cliquez sur ENTRER pour continuer."
+echo
+echo "echo '#Ansible cluster config' >> /etc/hosts"
+echo "echo '$control_plane_ip control-plane' >> /etc/hosts"
+echo "echo '$data_plane_1_ip data-plane-1' >> /etc/hosts"
+echo "echo '$data_plane_2_ip data-plane-2' >> /etc/hosts"
+echo
+
+read ENTRER
 
 # Generer la paire de clé ssh du master ansible
-multipass exec master-ansible -- "echo -e 'y\n' | ssh-keygen -f ~/.ssh/id_rsa -t rsa -N ''"
+echo "echo -e 'y\n' | ssh-keygen -f /home/${user}/.ssh/id_rsa -t rsa -N ''" | multipass shell master-ansible
 
 # Recuperer la clé publique du master ansible
-master_ansible_pub_key=$(multipass exec master-ansible -- "cat ~/.ssh/id_rsa.pub")
+master_ansible_pub_key=$(multipass exec master-ansible -- cat /home/${user}/.ssh/id_rsa.pub)
 
 # Ajouter la clé publique du master ansible aux clés autorisées des nodes ansible
-ssh data354@$control_plane_ip "echo $master_ansible_pub_key > ~/.ssh/authorized_keys" &
-ssh data354@$data_plane_1_ip "echo $master_ansible_pub_key > ~/.ssh/authorized_keys" &
-ssh data354@$data_plane_2_ip "echo $master_ansible_pub_key > ~/.ssh/authorized_keys" &
-ssh data354@$data_plane_3_ip "echo $master_ansible_pub_key > ~/.ssh/authorized_keys" &
+echo "echo $master_ansible_pub_key >> /home/${user}/.ssh/authorized_keys" | multipass shell control-plane &
+echo "echo $master_ansible_pub_key >> /home/${user}/.ssh/authorized_keys" | multipass shell data-plane-1 &
+echo "echo $master_ansible_pub_key >> /home/${user}/.ssh/authorized_keys" | multipass shell data-plane-2 &
 
 wait
 
 # Ajouter les adresses ip des nodes ansibles aux hotes connues du master pour faciliter la connexion sans interruption
-ssh data354@$master_ansible_ip "
-ssh-keyscan -H control-plane-1 > ~/.ssh/known_hosts && \
-ssh-keyscan -H data-plane-1 >> ~/.ssh/known_hosts && \
-ssh-keyscan -H data-plane-2 >> ~/.ssh/known_hosts && \
-ssh-keyscan -H data-plane-3 >> ~/.ssh/known_hosts
-"
+echo "
+ssh-keyscan -H control-plane-1 >> /home/${user}/.ssh/known_hosts && \
+ssh-keyscan -H data-plane-1 >> /home/${user}/.ssh/known_hosts && \
+ssh-keyscan -H data-plane-2 >> /home/${user}/.ssh/known_hosts 
+" | multipass shell master-ansible
 
-echo "Master Ansible Public Ip : $master_ansible_ip"
+echo "multipass shell master-ansible"
