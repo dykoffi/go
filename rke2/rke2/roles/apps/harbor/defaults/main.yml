@@ -1,8 +1,0 @@
----
-release_name: "harbor"
-release_namespace: "oci-harbor"
-harbor_repo: "https://charts.bitnami.com/bitnami"
-chart_version: "16.4.7"
-core_hostname: "core-{{ domain_name }}"
-notary_hostname: "notary-{{ domain_name }}"
-harbor_admin_pwd: "harbor_oci"

@@ -1,5 +1,0 @@
----
-chart_version: "v1.7.1"
-release_namespace: "cert-manager"
-release_name: "cert-manager"
-cluster_issuer_name: selfsigned-cluster-issuer
