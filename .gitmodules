@@ -1,6 +1,0 @@
-[submodule "exp1"]
-	path = exp1
-	url = https://github.com/dykoffi/go-example.git
-[submodule "rke2"]
-	path = rke2
-	url = https://github.com/dykoffi/rke2-multipass.git
