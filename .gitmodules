@@ -1,0 +1,3 @@
+[submodule "exp1"]
+	path = exp1
+	url = https://github.com/dykoffi/go-example.git
