@@ -1,0 +1,6 @@
+---
+keycloak_hostname: "keycloak-{{ domain_name }}"
+release_name: "keycloak"
+release_namespace: "oci-keycloak"
+keycloak_repo: "https://charts.bitnami.com/bitnami"
+chart_version: "13.0.5"
